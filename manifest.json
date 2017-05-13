@@ -1,0 +1,6 @@
+{
+  "name": "indexeddb-mirror-persited-test",
+  "short_name": "indexeddb-mirror-persited-test",
+  "start_url": "/",
+  "display": "standalone"
+}

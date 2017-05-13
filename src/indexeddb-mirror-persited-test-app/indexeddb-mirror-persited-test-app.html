@@ -1,0 +1,58 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<!--<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">-->
+<!--<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">-->
+<link rel="import" href="../../bower_components/app-storage/app-indexeddb-mirror/app-indexeddb-mirror.html">
+
+<dom-module id="indexeddb-mirror-persited-test-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+    </style>
+    <app-indexeddb-mirror id="indexeddb" key="cats" data="{{liveData}}" persisted-data="{{persistedData}}"></app-indexeddb-mirror>
+    <button type="button" name="button" on-click="populate">Populate data (liveData)</button>
+
+    <h4>Live data</h4>
+    <p>[[liveData]]</p>
+    <h4>persisted data</h4>
+    <p>[[persistedData]]</p>
+    <h4>store data app-indexeddb-mirror.getStoredValue()<button type="button" name="button" on-click="readStore">read store</button>
+</h4>
+    <p>[[storeData]]</p>
+
+  </template>
+
+  <script>
+    /** @polymerElement */
+    class IndexeddbMirrorPersitedTestApp extends Polymer.Element {
+      static get is() {
+        return 'indexeddb-mirror-persited-test-app';
+      }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'indexeddb-mirror-persited-test-app'
+          }
+        };
+      }
+      connectedCallback() {
+        super.connectedCallback();
+        if (navigator.storage && navigator.storage.persist) {
+          navigator.storage.persist().then(granted => console.log('navigator.storage.persist granted is ', granted));
+        }
+      }
+      populate() {
+        console.log("populate livedata");
+        this.liveData = "Hi i'm a data save at " + new Date().toString('HH:mm');
+      }
+      readStore() {
+        this.$.indexeddb.getStoredValue().then((r) => this.storeData = r);
+      }
+    }
+
+    window.customElements.define(IndexeddbMirrorPersitedTestApp.is, IndexeddbMirrorPersitedTestApp);
+  </script>
+</dom-module>
